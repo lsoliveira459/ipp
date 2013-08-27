@@ -1,0 +1,81 @@
+\documentclass[11pt,a4paper]{article} 
+
+\usepackage[brazilian]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{listings}
+\usepackage{color}
+\usepackage{xcolor}
+\usepackage{parskip}
+\usepackage{fullpage}
+
+\title{{\large Capítulo 03}\\\textit{Greetings!}}
+\author{Lucas Sousa de Oliveira (10/59491)}
+\date{\today}
+
+\lstdefinestyle{customc}{
+  belowcaptionskip=1\baselineskip,
+  breaklines=true,
+  frame=l,
+  xleftmargin=\parindent,
+  language=C,
+  showstringspaces=false,
+  basicstyle=\footnotesize\ttfamily,
+  keywordstyle=\bfseries\color{green!40!black},
+  commentstyle=\itshape\color{purple!40!black},
+  identifierstyle=\color{blue!50!black},
+  stringstyle=\color{orange},
+  numbers=left,
+  stepnumber=1,
+}
+
+\begin{document}
+\maketitle
+
+\section*{Objetivo}
+Introduzir o aluno ao processamento paralelo através do estudo de um programa simples chamado \textit{\lq\lq{}Greetings!\rq\rq{}}, equivalente ao famoso \textit{\lq\lq{}Hello World!\rq\rq{}}.
+
+\section*{Resumo}
+
+\begin{lstlisting}[style=customc]
+#include <stdio.h>
+#include <string.h>
+#include "mpi.h"
+
+int main(int argc, char* argv[]) {
+  int         my_rank;
+  int         p;
+  int         source;
+  int         dest;
+  int         tag = 0;
+  char        message[100];
+  MPI_Status  status;
+
+  MPI_Init(&argc, &argv);
+  MPI_Comm_rank(MPI_COMM_WORLD, &my_rank);
+  MPI_Comm_size(MPI_COMM_WORLD, &p);
+
+  if (my_rank != 0) {
+    sprintf(message, "Greetings from process %d!", my_rank);
+    dest = 0;
+    MPI_Send(message, strlen(message)+1, MPI_CHAR, dest, tag, MPI_COMM_WORLD);
+  } else {
+    for (source = 1; source < p; source++) {
+        MPI_Recv(message, 100, MPI_CHAR, source, tag, MPI_COMM_WORLD, &status);
+        printf("%s\n", message);
+    }
+  }
+
+  MPI_Finalize();
+}
+\end{lstlisting}
+
+\section*{Exercícios}
+\subsection*{1. Crie um arquivo contendo o programa \textit{\lq\lq{}Greetings!\rq\rq{}}. Descubra como compilar e executar em um número diferente de processadores. Qual é a saída do programa se ele for executado com apenas um processo? Quantos processadores podem ser usados?}
+\subsection*{2. Modifique o programa \textit{\lq\lq{}Greetings!\rq\rq{}} de forma que ele use elementos genéricos para \textit{source} e \textit{tag}. Existe alguma diferença na saída do programa?}
+\subsection*{3. Tente modificar alguns parametros de MPI\_Send e MPI\_Recv (e.g., \textit{count}, \textit{datatype}, \textit{source}, \textit{dest}). O que acontece quando se executa o programa? Ele falha? Ele pára?}
+\subsection*{4. Modifique o programa \textit{\lq\lq{}Greetings!\rq\rq{}} de forma que todos os processos enviam uma mensagem para o processo $\textbf{p-1}$.}
+
+\section*{Trabalho de programação}
+\subsection*{1. Escreva um programa em que cada processo $\textbf{i}$ envia mensagem ao processo $\textbf{(i+1)\%p}$. (Cuidado em como $\textbf{i}$ calcula de quem deve receber a mensagem). O processo $\textbf{i}$ deverá enviar uma mensagem para $\textbf{i+1}$ e depois receber de $\textbf{i-1}$, ou o contrário? Faz diferença? O que acontece quando o programa é rodado em um processador?}
+
+\end{document}
