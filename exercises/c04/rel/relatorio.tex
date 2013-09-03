@@ -358,7 +358,7 @@ void Get_data(float* a_ptr, float* b_ptr, int* n_ptr,int* f_ptr, int my_rank, in
     MPI_Status status;
 
     if (my_rank == 0){
-		printf("Functions (f):\n0. x**2\n1. x**2+1\n2. x**2+2")
+        printf("Functions (f):\n0. x**2\n1. x**2+1\n2. x**2+2")
         printf("Enter a, b, n, and f\n");
         scanf("%f %f %d %d", a_ptr, b_ptr, n_ptr, f_ptr);
         for (dest = 1; dest < p; dest++){
@@ -419,12 +419,12 @@ Note que cada processo deve primeiro enviar a mensagem para depois esperar, uma 
 
 \begin{figure}[h!]
   \centering
-  %\includegraphics[]{../exp/ResultadoMod}
+  %\includegraphics[]{../exp1/SaidaExp1}
   \caption{Resultado do programa modificado.}
   \label{fig:exp}
 \end{figure}
 
-Quando o programa é rodado em apenas um processador espera-se que as respostas passem a ficar ordenadas, uma vez que os fatores externos que geravam o desordenamento, tais como atrasos conexão e cargas de utilização dos outros processadores, deixam de existir.
+\subsection{Uma alternativa mais precisa que a regra trapezoidal é a regra de Simpson. A idéia básica é de aproximar a curva de $\mathbf{f(x)}$ por arcos de parabolas ao invés de segmentos de linhas. }
 
 \section{Conclusão}
 Conclui-se que a biblioteca MPI possui as ferramentas necessárias para o desenvolvimento de programas paralelos, inclusive com seus processos distribuidos entre várias máquinas.
