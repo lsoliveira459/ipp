@@ -61,15 +61,22 @@ Examinaremos cada uma dessas opções a seguir.
 Parei em 6.6
 
 \section{Exercícios}
-\subsection{Edite o programa da regra trapezoidal de forma que ele use Get\_data3.}
+\subsection{Edite o programa da regra trapezoidal de forma que ele use Get\_data3.} (Já posso fazer)
 O programa com as modificações solicitadas encontra-se abaixo.
+Note que o uso do tipo derivado com variáveis soltas não é muito bom uma vez que este tipo só poderá ser usado para aquela configuração específica de memória.
+Se uma outra função quiser utilizar este tipo derivado, ela precisará redefinir o vetor de distancias (\textit{displacements}).
 \lstinputlisting[style=cc]{../ex1/ex1_getdata3.c}
 
 \subsection{Edite o programa da regra trapezoidal de forma que ele use Get\_data4.}
 %\lstinputlisting[style=cc]{ex2_getdata4.c}
 
-\subsection{Escreva um programa que cria um tipo derivado de dados para representar uma matrix esparça. Um entrada da matriz é uma estrutura contendo um ponto flutuante e dois inteiros. Os inteiros representam a linha e coluna de uma entrada cujo valor é dado pelo ponto flutuante. Teste seu tipo derivado usando um curto programa que o mande uma entrada de uma matriz de um processo para outro.} (Já posso fazer)
-%\lstinputlisting[style=cc]{ex3_sparse.c}
+\subsection{Escreva um programa que cria um tipo derivado de dados para representar uma matrix esparça. Um entrada da matriz é uma estrutura contendo um ponto flutuante e dois inteiros. Os inteiros representam a linha e coluna de uma entrada cujo valor é dado pelo ponto flutuante. Teste seu tipo derivado usando um curto programa que o mande uma entrada de uma matriz de um processo para outro.}
+O programa com as modificações solicitadas encontra-se abaixo.
+Note que, como mencionado na questão 1, o uso do tipo derivado com variáveis soltas não é muito bom uma vez que este tipo só poderá ser usado para aquela configuração específica de memória.
+Se uma outra função quiser utilizar este tipo derivado, ela precisará redefinir o vetor de distancias (\textit{displacements}).
+Por causa disso, ao invés de lidar com variáveis soltas, elas foram agrupadas em uma estrutura.
+O C garante que as informações contidas numa estrutura são armazenadas continuamente, o que nos garante que esta estrutura pode ser usadas por diversas funções de forma mais genérica que a anterior.
+\lstinputlisting[style=cc]{../ex3/ex3_sparse.c}
 
 \subsection{} (Já posso fazer)
 
