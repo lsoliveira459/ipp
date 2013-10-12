@@ -61,7 +61,7 @@ Examinaremos cada uma dessas opções a seguir.
 Parei em 6.6
 
 \section{Exercícios}
-\subsection{Edite o programa da regra trapezoidal de forma que ele use Get\_data3.} (Já posso fazer)
+\subsection{Edite o programa da regra trapezoidal de forma que ele use Get\_data3.}
 O programa com as modificações solicitadas encontra-se abaixo.
 Note que o uso do tipo derivado com variáveis soltas não é muito bom uma vez que este tipo só poderá ser usado para aquela configuração específica de memória.
 Se uma outra função quiser utilizar este tipo derivado, ela precisará redefinir o vetor de distancias (\textit{displacements}).
@@ -75,10 +75,51 @@ O programa com as modificações solicitadas encontra-se abaixo.
 Note que, como mencionado na questão 1, o uso do tipo derivado com variáveis soltas não é muito bom uma vez que este tipo só poderá ser usado para aquela configuração específica de memória.
 Se uma outra função quiser utilizar este tipo derivado, ela precisará redefinir o vetor de distancias (\textit{displacements}).
 Por causa disso, ao invés de lidar com variáveis soltas, elas foram agrupadas em uma estrutura.
-O C garante que as informações contidas numa estrutura são armazenadas continuamente, o que nos garante que esta estrutura pode ser usadas por diversas funções de forma mais genérica que a anterior.
+O C garante que as informações contidas numa estrutura são armazenadas continuamente, o que nos garante que esta estrutura pode ser usadas por diversas funções de forma mais genérica que a anterior. 
 \lstinputlisting[style=cc]{../ex3/ex3_sparse.c}
 
-\subsection{} (Já posso fazer)
+\subsection{Tendo em vista a regra de equivalencia de tipos, é possível para muitos tipos diferentes especificados por um remetente corresponderem a um dado tipo especificado pelo receptor. Considere um programa com as definições abaixo. Descreva brevemente a memória no processo 0 e no processo 1 referenciados por cada envio/recebimento. Quais recebimentos recebem que envios?}
+\begin{lstlisting}[style=cc]
+float        B[5][5];
+float        x[5];
+MPI_Datatype first_mpi_t;
+MPI_Datatype second_mpi_t;
+MPI_Datatype third_mpi_t;
+int          blocklengths[5] = {1,1,1,1,1};      
+int          displacements[5];
+
+MPI_Type_contiguous(5, MPI_FLOAT, &first_mpi_t);
+MPI_Type_vector(5, 1, 5, MPI_FLOAT, &second_mpi_t);
+for (i = 0; i <5; i++)
+    displacements[i] = 6*i;
+MPI_Type_indexed(5, block_lengths, displacements, MPI_FLOAT, &third_mpi_t);
+
+...
+
+Process 0:
+    MPI_Send(x, 5, MPI_FLOAT, 1, 0, MPI_COMM_WORLD);
+    MPI_Send(&(B[1][0]), 5, MPI_FLOAT, 1, 0, MPI_COMM_WORLD);
+    MPI_Send(x, 1, first_mpi_t, 1, 0, MPI_COMM_WORLD);
+    MPI_Send(&(B[0][3]), 1, second_mpi_t, 1, 0, MPI_COMM_WORLD);
+    MPI_Send(&(B[0][0]), 1, third_mpi_t, 1, 0, MPI_COMM_WORLD);
+Process 1:
+    MPI_Recv(x, 5, MPI_FLOAT, 0, 0, MPI_COMM_WORLD, &status);
+    MPI_Recv(&(B[1][0]), 5, MPI_FLOAT, 0, 0, MPI_COMM_WORLD, &status);
+    MPI_Recv(x, 1, first_mpi_t, 0, 0, MPI_COMM_WORLD, &status);
+    MPI_Recv(&(B[0][1]), 1, second_mpi_t, 0, 0, MPI_COMM_WORLD, &status);
+    MPI_Recv(&(B[0][0]), 1, third_mpi_t, 0, 0, MPI_COMM_WORLD, &status);
+\end{lstlisting}
+
+O primeiro envio do processo 0 envia os 5 elementos de $x$ para o $x$ do processo 1.
+O segundo envio do processo 0 envia os primeiros 5 elementos da segunda linha de $B$ para o mesmo lugar da matriz $B$ no processo 1.
+O terceiro envio do processo 0 envia os 5 elementos de $x$ para o $x$ do processo 1.
+O quarto envio do processo 0 envia 5 elementos da quarta coluna de $B$ para a segunda coluna da $B$ do processo 1.
+O quinto envio do processo 0 envia os 5 elementos $(i,j)$, onde $i = j$, para as mesmas posições na matriz $B$ do processo 1.
+
+\section{Trabalhos de Programação}
+\subsection{}
+\subsection{}
+\subsection{}
 
 \section{Conclusão}
 Conclui-se que a biblioteca MPI permite a distribuição de processamento entre diversos computadores, podendo assim aumentar o poder computacional diponível para um programa.
