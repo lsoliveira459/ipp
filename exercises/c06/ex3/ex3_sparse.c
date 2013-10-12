@@ -6,7 +6,7 @@ typedef struct {
     float v;
 } sparce_matrix;
 
-int build_derived_type(sparce_matrix* mat,MPI_Datatype* msg_mpi_t_ptr) {
+void build_derived_type(sparce_matrix* mat,MPI_Datatype* msg_mpi_t_ptr) {
     int block_lengths[] = {1,1,1};
     MPI_Aint displacements[3], start_address, address;
     MPI_Datatype typelist[3];
@@ -22,6 +22,6 @@ int build_derived_type(sparce_matrix* mat,MPI_Datatype* msg_mpi_t_ptr) {
     MPI_Address(&(mat->v), &address);
     displacements[2] = address - start_address;
 
-    MPI_Type_struct(3, block_lenghts, displacements, typelist, msg_mpi_t_ptr);
+    MPI_Type_struct(3, block_lengths, displacements, typelist, msg_mpi_t_ptr);
     MPI_Type_commit(msg_mpi_t_ptr);
 }
