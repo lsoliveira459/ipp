@@ -3,3 +3,4 @@ PeterPacheco*.pdf
 *.log
 *.synctex.gz
 *.*~
+*.sw*

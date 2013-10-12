@@ -1,0 +1,82 @@
+\documentclass[11pt,a4paper,onecolumn]{article}
+
+\usepackage[brazilian]{babel}
+\usepackage[utf8x]{inputenc}
+\usepackage{listings}
+\usepackage{fullpage}
+\usepackage{color, xcolor, indentfirst, tikz}
+\usepackage{graphicx, caption, subcaption, standalone}
+\usetikzlibrary{arrows,decorations.pathreplacing,matrix,calc}
+
+
+\title{Relatório do Capítulo 06 de\\Introdução à Programação Paralela}
+\author{Lucas Sousa de Oliveira (10/59491)}
+\date{\today}
+
+\lstdefinestyle{cc}{
+  belowcaptionskip=1\baselineskip,
+  breaklines=true,
+  frame=l,
+  xleftmargin=\parindent,
+  language=C,
+  showstringspaces=false,
+  basicstyle=\footnotesize\ttfamily,
+  keywordstyle=\bfseries\color{green!40!black},
+  commentstyle=\itshape\color{purple!40!black},
+  identifierstyle=\color{blue!50!black},
+  stringstyle=\color{orange},
+  numbers=left,
+  stepnumber=1,
+}
+\lstdefinestyle{cbash}{
+  breaklines=true,
+  frame=l,
+  language=bash,
+  basicstyle=\footnotesize\ttfamily\color{orange},
+  numbers=none,
+  stepnumber=1,
+  rulecolor=\color{black},
+  belowcaptionskip=1\baselineskip,
+  xleftmargin=\parindent,
+}
+\lstset{language=C}
+
+\begin{document}
+\maketitle
+
+\section{Título do Capítulo}
+\textit{Grouping Data For Communication}
+
+\section{Objetivo}
+Foi mencionado no capítulo 3 que na geração atual de sistemas paralelos, o envio de uma mensagem é uma operação custosa.
+Uma consequencia natural disto é que, via de regra, quanto menos mensagens são enviadas, melhor o desempenho geral do programa.
+Entretanto, em cada um dos nossos programas de cálculo da regra trapezoidal, quando distribuímos os dados, separamos "a", "b" e "n" em mensagens diferentes - seja com MPI\_Send e MPI\_Recv ou MPI\_Bcast.
+Desta forma, podemos melorar a performance do nosso programa enviando vários dados em uma única mensagem.
+MPI disponibiliza mecanismos para o agrupamento de dados individuais em uma única mensagem: o parametro \textit{count} em diversas rotinas de comunicação, tipos de dados derivados, e MPI\_Pack/MPI\_Unpack.
+Examinaremos cada uma dessas opções a seguir.
+
+\section{Resumo}
+\label{sec:resumo}
+
+Parei em 6.6
+
+\section{Exercícios}
+\subsection{Edite o programa da regra trapezoidal de forma que ele use Get\_data3.} (Já posso fazer)
+\lstinputlisting[style=cc]{ex1_getdata3.c}
+
+\subsection{Edite o programa da regra trapezoidal de forma que ele use Get\_data4.}
+\lstinputlisting[style=cc]{ex2_getdata4.c}
+
+\subsection{Escreva um programa que cria um tipo derivado de daos para representar uma matrix esparça. Um entrada da matriz é uma estrutura contendo um ponto flutuante e dois inteiros. Os inteiros representam a linha e coluna de uma entrada cujo valor é dado pelo ponto flutuante. Teste seu tipo derivado usando um curto programa que o mande uma entrada de uma matriz de um processo para outro.} (Já posso fazer)
+\lstinputlisting[style=cc]{ex3_sparse.c}
+
+\subsection{} (Já posso fazer)
+
+\section{Conclusão}
+Conclui-se que a biblioteca MPI permite a distribuição de processamento entre diversos computadores, podendo assim aumentar o poder computacional diponível para um programa.
+As ferramentas apresentadas aqui se mostraram extremamente úteis, apesar de simples, para as tarefas de computaçao paralela e distribuída.
+
+\section{Referências}
+\paragraph{Pacheco, P.S.,} (1997) \textit{Parallel Programming with MPI}. Morgan Kaufmann.
+
+\end{document}
